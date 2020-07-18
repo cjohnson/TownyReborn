@@ -1,0 +1,8 @@
+name: TownyReborn
+version: 1.1.1
+main: org.cjohnson.townyreborn.TownyReborn
+api-version: 1.16
+prefix: Towny
+depend: [Vault, WorldGuard]
+authors: [cjohnson]
+description: TownyReborn is a new version of the Towny plugin for playing Minecraft like it's 2015.

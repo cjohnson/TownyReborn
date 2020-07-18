@@ -1,0 +1,51 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
+plugins {
+    id 'com.github.johnrengelman.shadow' version '5.2.0'
+    id 'java'
+}
+
+group = 'org.cjohnson'
+version = '1.0-SNAPSHOT'
+
+sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
+
+repositories {
+    mavenCentral()
+    maven {
+        url = "https://repo.aikar.co/content/groups/aikar/"
+    }
+    maven {
+        name = 'spigotmc-repo'
+        url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+    }
+    maven {
+        name = 'sonatype'
+        url = 'https://oss.sonatype.org/content/groups/public/'
+    }
+}
+
+compileJava {
+    options.compilerArgs += ["-parameters"]
+    options.fork = true
+    options.forkOptions.executable = 'javac'
+}
+
+dependencies {
+    compileOnly 'org.spigotmc:spigot-api:1.16.1-R0.1-SNAPSHOT'
+
+    compile "co.aikar:acf-paper:0.5.0-SNAPSHOT"
+}
+
+processResources {
+    from(sourceSets.main.resources.srcDirs) {
+        filter ReplaceTokens, tokens: [version: version]
+    }
+}
+
+shadowJar {
+    relocate 'co.aikar.commands', 'org.cjohnson.townyreborn.acf'
+    relocate 'co.aikar.locales', 'org.cjohnson.townyreborn.locales'
+}
+
+build.dependsOn shadowJar
